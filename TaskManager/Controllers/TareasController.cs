@@ -1,4 +1,5 @@
 ﻿using ApplicationLayer.Services.TaskServices;
+using CapaInfraestructura.Repositorio.Delegates;
 using DomainLayer.DTO;
 using DomainLayer.Models;
 using Microsoft.AspNetCore.Http;
@@ -13,8 +14,14 @@ namespace TaskManager.Controllers
     public class TareasController : ControllerBase
     {
         private readonly TaskService _service;
-        public TareasController(TaskService service)
+        private readonly IValidadorTareas _validador;
+        private readonly ICalculadorTareas _calculador;
+        public TareasController(IValidadorTareas validador, 
+            ICalculadorTareas calculador, 
+            TaskService service)
         {
+            _validador = validador;
+            _calculador = calculador;
             _service = service;
         }
 
@@ -26,12 +33,59 @@ namespace TaskManager.Controllers
            => await _service.GetTaskByIdAllAsync(id);
         [HttpPost]
         public async Task<ActionResult<Response<string>>> AddTaskAllAsync(Tareas tarea)
-           => await _service.AddTaskAllAsync(tarea);
+        {
+            
+            if (!_validador.Validar(tarea))
+            {
+                return BadRequest("La tarea no es válida.");
+            }
+
+            
+            var result = await _service.AddTaskAllAsync(tarea);
+
+            return result;
+        }
         [HttpPut]
         public async Task<ActionResult<Response<string>>> UpdateTaskAllAsync(Tareas tarea)
-          => await _service.UpdateTaskAllAsync(tarea);
+        {
+            
+            if (!_validador.Validar(tarea))
+            {
+                return BadRequest("La tarea no es válida.");
+            }
+
+            
+            var result = await _service.UpdateTaskAllAsync(tarea);
+
+            return result;
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<Response<string>>> DeleteTaskAllAsync(int id)
-          => await _service.DeleteTaskAllAsync(id);
+        {
+            var tarea = await _service.GetTaskByIdAllAsync(id);
+            
+            var result = await _service.DeleteTaskAllAsync(id);
+
+            return result;
+        }
+
+        [HttpGet("dias-restantes/{id}")]
+        public async Task<ActionResult<Response<string>>> GetDiasRestantesAsync(int id)
+        {
+            var tarea = await _service.GetTaskByIdAllAsync(id);
+
+            if (tarea == null)
+            {
+                return NotFound("Tarea no encontrada.");
+            }
+
+            // Delegado para calcular los días restantes
+            int diasRestantes = _calculador.CalcularDiasRestantes(
+                t => (t.DueDate - DateTime.Now).Days, tarea.SingleData);
+
+            return Ok(diasRestantes);
+        }
+
     }
 }
