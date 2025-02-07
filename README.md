@@ -13,4 +13,8 @@ Etapa 2 - 30/01/2025
 
 Agregacion de delegados para validacion de tareas y calculo de tiempo restante, asi como un endpoint para verificar el tiempo restante de una tarea
 
-Etapa 3 - In progress...
+Etapa 3 - 07/02/2025
+
+Creacion de la Fabrica para manejo de creacion de tareas, tanto de baja como alta prioridad, 
+Agregacion de 2 endpoints para la creacion de tareas modular, solo requiriendo una descripcion y los demas datos vayan ya integrados,
+Asi como reestructuracion a la clase ITask para futuras expansiones, para no seguir dependiendo de ICommonsProcess
