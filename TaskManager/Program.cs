@@ -1,4 +1,6 @@
 using ApplicationLayer.Services.TaskServices;
+using CapaAplicacion.Services.DelegateServices;
+using CapaInfraestructura.Repositorio.Delegates;
 using DomainLayer.Models;
 using InfrastructureLayer;
 using InfrastructureLayer.Repositorio.Commons;
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<TaskManagerContext>(options =>
 });
 
 builder.Services.AddScoped<ICommonsProcess<Tareas>, TaskRepository>();
+builder.Services.AddScoped<IValidadorTareas, ValidadorTareas>();
+builder.Services.AddScoped<ICalculadorTareas, CalculadorTareas>();
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
