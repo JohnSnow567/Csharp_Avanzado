@@ -1,4 +1,6 @@
-﻿using DomainLayer.Models;
+﻿using CapaInfraestructura.Repositorio.Tasks;
+using DomainLayer.Models;
+using CapaDominio.Factories;
 using InfrastructureLayer.Repositorio.Commons;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 namespace InfrastructureLayer.Repositorio.TaskRepository
 {
     // Repositorio de los datos, para cambiar la logica de negocio pertinente
-    public class TaskRepository : ICommonsProcess<Tareas>
+    public class TaskRepository : ITask
     {
         private readonly TaskManagerContext _context;
 
@@ -88,6 +90,56 @@ namespace InfrastructureLayer.Repositorio.TaskRepository
           
         }
 
-       
+        public async Task<(bool IsSuccess, string Message)> AddLowPriorityTask(string Descripcion)
+        {
+            try
+            {
+                var exists = _context.Tarea.Any(x => x.Description == Descripcion);
+
+                if (exists)
+                {
+                    return (false, "Ya existe una tarea con ese nombre...");
+                }
+
+                if (Descripcion == null)
+                {
+                    return (false, "Por favor ingrese un nombre...");
+                }
+                await _context.Tarea.AddAsync(TareaFactory.CrearTareaBajaPrioridad(Descripcion));
+                await _context.SaveChangesAsync();
+                return (true, "La tarea se guardo correctamente...");
+            }
+            catch (Exception)
+            {
+
+                return (false, "No se pudo guardar la tarea...");
+            }
+
+        }
+
+        public async Task<(bool IsSuccess, string Message)> AddHighPriorityTask(string Descripcion)
+        {
+            try
+            {
+                var exists = _context.Tarea.Any(x => x.Description == Descripcion);
+
+                if (exists)
+                {
+                    return (false, "Ya existe una tarea con ese nombre...");
+                }
+                if (Descripcion == null)
+                {
+                    return (false, "Por favor ingrese un nombre...");
+                }
+                await _context.Tarea.AddAsync(TareaFactory.CrearTareaAltaPrioridad(Descripcion));
+                await _context.SaveChangesAsync();
+                return (true, "La tarea se guardo correctamente...");
+            }
+            catch (Exception)
+            {
+
+                return (false, "No se pudo guardar la tarea...");
+            }
+        }
     }
 }

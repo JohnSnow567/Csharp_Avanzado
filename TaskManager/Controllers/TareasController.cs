@@ -87,5 +87,22 @@ namespace TaskManager.Controllers
             return Ok(diasRestantes);
         }
 
+        [HttpPost("Crear Tarea Baja Prioridad")]
+        public async Task<ActionResult<Response<string>>> AddLowPriorityTaskAsync(string descripcion)
+        {
+
+            var result = await _service.AddLowPriorityTask(descripcion);
+
+            return result;
+        }
+        [HttpPost("Crear Tarea Alta Prioridad")]
+        public async Task<ActionResult<Response<string>>> AddHighPriorityTaskAsync(string descripcion)
+        {
+
+            var result = await _service.AddHighPriorityTask(descripcion);
+
+            return result;
+        }
+
     }
 }

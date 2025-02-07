@@ -1,6 +1,7 @@
 using ApplicationLayer.Services.TaskServices;
 using CapaAplicacion.Services.DelegateServices;
 using CapaInfraestructura.Repositorio.Delegates;
+using CapaInfraestructura.Repositorio.Tasks;
 using DomainLayer.Models;
 using InfrastructureLayer;
 using InfrastructureLayer.Repositorio.Commons;
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<TaskManagerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TaskManagerDB"));
 });
 
-builder.Services.AddScoped<ICommonsProcess<Tareas>, TaskRepository>();
+builder.Services.AddScoped<ITask, TaskRepository>();
 builder.Services.AddScoped<IValidadorTareas, ValidadorTareas>();
 builder.Services.AddScoped<ICalculadorTareas, CalculadorTareas>();
 builder.Services.AddScoped<TaskService>();
