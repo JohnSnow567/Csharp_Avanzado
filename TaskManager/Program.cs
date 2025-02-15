@@ -1,5 +1,6 @@
 using ApplicationLayer.Services.TaskServices;
 using CapaAplicacion.Services.DelegateServices;
+using CapaAplicacion.Services.TaskServices;
 using CapaInfraestructura.Repositorio.Delegates;
 using CapaInfraestructura.Repositorio.Tasks;
 using DomainLayer.Models;
@@ -20,6 +21,7 @@ builder.Services.AddScoped<ITask, TaskRepository>();
 builder.Services.AddScoped<IValidadorTareas, ValidadorTareas>();
 builder.Services.AddScoped<ICalculadorTareas, CalculadorTareas>();
 builder.Services.AddScoped<TaskService>();
+builder.Services.AddSingleton<ReactiveTaskQueue>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CapaAplicacion.Services.TaskServices;
 
 namespace ApplicationLayer.Services.TaskServices
 {
@@ -15,10 +16,12 @@ namespace ApplicationLayer.Services.TaskServices
     public class TaskService
     {
         private readonly ITask _tareasProcess;
+        private readonly ReactiveTaskQueue _taskQueue;
 
-        public TaskService(ITask tareaProcess)
+        public TaskService(ITask tareaProcess, ReactiveTaskQueue taskQueue)
         {
             _tareasProcess = tareaProcess;
+            _taskQueue = taskQueue;
         }
 
         // Metodo para conseguir todas las tareas
@@ -69,7 +72,7 @@ namespace ApplicationLayer.Services.TaskServices
             try
             {
 
-                var result = await _tareasProcess.AddAsync(tarea);
+                var result = await _taskQueue.Enqueue(() => _tareasProcess.AddAsync(tarea));
                 response.Message = result.Message;
                 response.Successful = result.IsSuccess;
             }
@@ -86,7 +89,7 @@ namespace ApplicationLayer.Services.TaskServices
             var response = new Response<string>();
             try
             {
-                var result = await _tareasProcess.UpdateAsync(tarea);
+                var result = await _taskQueue.Enqueue(() => _tareasProcess.UpdateAsync(tarea));
                 response.Message = result.Message;
                 response.Successful = result.IsSuccess;
             }
@@ -103,7 +106,7 @@ namespace ApplicationLayer.Services.TaskServices
             var response = new Response<string>();
             try
             {
-                var result = await _tareasProcess.DeleteAsync(id);
+                var result = await _taskQueue.Enqueue(() => _tareasProcess.DeleteAsync(id));
                 response.Message = result.Message;
                 response.Successful = result.IsSuccess;
             }
@@ -120,7 +123,7 @@ namespace ApplicationLayer.Services.TaskServices
             try
             {
 
-                var result = await _tareasProcess.AddLowPriorityTask(descripcion);
+                var result = await _taskQueue.Enqueue(() => _tareasProcess.AddLowPriorityTask(descripcion));
                 response.Message = result.Message;
                 response.Successful = result.IsSuccess;
             }
@@ -137,7 +140,7 @@ namespace ApplicationLayer.Services.TaskServices
             try
             {
 
-                var result = await _tareasProcess.AddHighPriorityTask(descripcion);
+                var result = await _taskQueue.Enqueue(() => _tareasProcess.AddHighPriorityTask(descripcion));
                 response.Message = result.Message;
                 response.Successful = result.IsSuccess;
             }
