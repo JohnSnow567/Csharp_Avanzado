@@ -23,3 +23,8 @@ Etapa 4 - 15/02/2025
 
 Implementacion de Rx.Net a TaskServices para el manejo de tareas de creacion, actualizacion y borrado, creando la clase ReactiveTaskQueue
 para los procesos necesarios
+
+Etapa 5 - 22/02/2025
+
+Introduccion de un servicio para el manejo de memorizacion en el programa, permitiendo almacenar datos repetidos en cache para futuras
+iteraciones del mismo endpoint y asi optimizar el uso de memoria
