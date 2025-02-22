@@ -14,8 +14,6 @@ namespace TaskManager.Controllers
     // Endpoints para la API de gestion de tareas
     public class TareasController : ControllerBase
     {
-        private static readonly Dictionary<int, int> _diasRestantesCache = new Dictionary<int, int>();
-
         private readonly TaskService _service;
         private readonly IValidadorTareas _validador;
         private readonly ICalculadorTareas _calculador;
