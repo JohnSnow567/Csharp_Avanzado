@@ -3,11 +3,13 @@ using CapaAplicacion.Services.CacheServices;
 using CapaInfraestructura.Repositorio.Delegates;
 using DomainLayer.DTO;
 using DomainLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TaskManager.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
