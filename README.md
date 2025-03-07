@@ -28,3 +28,8 @@ Etapa 5 - 22/02/2025
 
 Introduccion de un servicio para el manejo de memorizacion en el programa, permitiendo almacenar datos repetidos en cache para futuras
 iteraciones del mismo endpoint y asi optimizar el uso de memoria
+
+Etapa 6 - 1/03/2025
+
+Agregadas varias clases para el manejo de autorizacion y autenticacion con JWT, asi protegiendo los endpoints para verificar que solo
+los usuarios registrados puedan utilizarlos
