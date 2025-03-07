@@ -3,9 +3,13 @@ using CapaAplicacion.Services.CacheServices;
 using CapaInfraestructura.Repositorio.Delegates;
 using DomainLayer.DTO;
 using DomainLayer.Models;
+using InfrastructureLayer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using System.Threading;
+using TaskManager.Hubs;
 
 namespace TaskManager.Controllers
 {
@@ -20,15 +24,18 @@ namespace TaskManager.Controllers
         private readonly IValidadorTareas _validador;
         private readonly ICalculadorTareas _calculador;
         private readonly CacheService _cache;
+        private readonly IHubContext<TareasHub> _hubContext;
         public TareasController(IValidadorTareas validador, 
             ICalculadorTareas calculador, 
             TaskService service,
-            CacheService cache)
+            CacheService cache,
+            IHubContext<TareasHub> hubContext)
         {
             _validador = validador;
             _calculador = calculador;
             _service = service;
             _cache = cache;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -46,8 +53,13 @@ namespace TaskManager.Controllers
                 return BadRequest("La tarea no es válida.");
             }
 
-            
             var result = await _service.AddTaskAllAsync(tarea);
+
+            if (result.Successful)
+            {
+                // Envia la notificación a todos los clientes conectados
+                await _hubContext.Clients.All.SendAsync("TareaCreada", tarea);
+            }
 
             return result;
         }
@@ -114,6 +126,12 @@ namespace TaskManager.Controllers
 
             var result = await _service.AddLowPriorityTask(descripcion);
 
+            if (result.Successful)
+            {
+                // Envia la notificación a todos los clientes conectados
+                await _hubContext.Clients.All.SendAsync("TareaCreada", descripcion);
+            }
+
             return result;
         }
         [HttpPost("Crear Tarea Alta Prioridad")]
@@ -121,6 +139,12 @@ namespace TaskManager.Controllers
         {
 
             var result = await _service.AddHighPriorityTask(descripcion);
+
+            if (result.Successful)
+            {
+                // Envia la notificación a todos los clientes conectados
+                await _hubContext.Clients.All.SendAsync("TareaCreada", descripcion);
+            }
 
             return result;
         }

@@ -14,6 +14,7 @@ using InfrastructureLayer.Repositorio.TaskRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using TaskManager.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddSingleton<CacheService>();
 builder.Services.AddSingleton<ReactiveTaskQueue>();
 builder.Services.AddControllers();
+
+builder.Services.AddSignalR();
 
 // Configuración de la clave secreta (idealmente en appsettings.json)
 var secretKey = builder.Configuration["Jwt:SecretKey"];
@@ -89,5 +92,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<TareasHub>("/tareasHub");
 
 app.Run();
