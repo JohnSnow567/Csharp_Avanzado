@@ -37,3 +37,8 @@ los usuarios registrados puedan utilizarlos
 Etapa 7 - 7/03/2025
 
 Configuracion de SignalR para que mande una notificacion a los usuarios cada vez que se crea una tarea en tiempo real
+
+Etapa 8 - 16/03/2025
+
+Implementacion de las pruebas unitarias en la API, para mantener un estandar de calidad en el codigo y verificar que se esten ejecutando
+correctamente diversos modulos de la aplicacion 
