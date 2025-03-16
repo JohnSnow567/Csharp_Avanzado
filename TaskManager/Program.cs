@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using TaskManager.Hubs;
+using CapaInfraestructura.Repositorio.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +28,8 @@ builder.Services.AddDbContext<TaskManagerContext>(options =>
 builder.Services.AddScoped<ITask, TaskRepository>();
 builder.Services.AddScoped<IValidadorTareas, ValidadorTareas>();
 builder.Services.AddScoped<ICalculadorTareas, CalculadorTareas>();
-builder.Services.AddScoped<TaskService>();
-builder.Services.AddSingleton<CacheService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddSingleton<ReactiveTaskQueue>();
 builder.Services.AddControllers();
 

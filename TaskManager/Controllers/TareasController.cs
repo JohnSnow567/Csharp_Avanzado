@@ -1,6 +1,8 @@
 ﻿using ApplicationLayer.Services.TaskServices;
 using CapaAplicacion.Services.CacheServices;
+using CapaInfraestructura.Repositorio.Cache;
 using CapaInfraestructura.Repositorio.Delegates;
+using CapaInfraestructura.Repositorio.Tasks;
 using DomainLayer.DTO;
 using DomainLayer.Models;
 using InfrastructureLayer;
@@ -20,15 +22,15 @@ namespace TaskManager.Controllers
     // Endpoints para la API de gestion de tareas
     public class TareasController : ControllerBase
     {
-        private readonly TaskService _service;
+        private readonly ITaskService _service;
         private readonly IValidadorTareas _validador;
         private readonly ICalculadorTareas _calculador;
-        private readonly CacheService _cache;
+        private readonly ICacheService _cache;
         private readonly IHubContext<TareasHub> _hubContext;
         public TareasController(IValidadorTareas validador, 
             ICalculadorTareas calculador, 
-            TaskService service,
-            CacheService cache,
+            ITaskService service,
+            ICacheService cache,
             IHubContext<TareasHub> hubContext)
         {
             _validador = validador;

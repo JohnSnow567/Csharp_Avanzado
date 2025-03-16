@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CapaInfraestructura.Repositorio.Cache;
 
 namespace CapaAplicacion.Services.CacheServices
 {
-    public class CacheService
+    public class CacheService : ICacheService
     {
         private readonly Dictionary<int, int> _diasRestantesCache = new Dictionary<int, int>();
 

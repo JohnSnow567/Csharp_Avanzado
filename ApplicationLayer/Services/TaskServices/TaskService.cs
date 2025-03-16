@@ -13,7 +13,7 @@ using CapaAplicacion.Services.TaskServices;
 namespace ApplicationLayer.Services.TaskServices
 {
     // Servicio del manejo de tareas
-    public class TaskService
+    public class TaskService : ITaskService
     {
         private readonly ITask _tareasProcess;
         private readonly ReactiveTaskQueue _taskQueue;
