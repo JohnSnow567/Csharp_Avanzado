@@ -33,3 +33,7 @@ Etapa 6 - 1/03/2025
 
 Agregadas varias clases para el manejo de autorizacion y autenticacion con JWT, asi protegiendo los endpoints para verificar que solo
 los usuarios registrados puedan utilizarlos
+
+Etapa 7 - 7/03/2025
+
+Configuracion de SignalR para que mande una notificacion a los usuarios cada vez que se crea una tarea en tiempo real
